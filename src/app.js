@@ -1,15 +1,14 @@
 // src/app.js
-import express from 'express';
-import passport from 'passport';
+import express from "express";
+import passport from "passport";
 // import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import { setupPassport } from './config/passport.js';
-import authRoutes from './routes/auth.js'; 
-import userRoutes from './routes/users.js';
+import "dotenv/config";
+import { setupPassport } from "./config/passport.js";
+import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/users.js";
+import Logger from "./config/logger.js";
 
-dotenv.config();
-
-const app = express(); 
+const app = express();
 const port = process.env.PORT;
 
 // Middleware
@@ -20,19 +19,32 @@ setupPassport();
 app.use(passport.initialize());
 
 // Routes
-app.use('/auth', authRoutes); 
-app.use('/users', userRoutes); 
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
+
+// Logger
+app.use((req, res, next) => {
+  Logger.http(`${req.method} ${req.url}`);
+  next();
+});
 
 // Basic health check
-app.get('/', (req, res) => {
-  res.json({ status: `Server is running on port => ${port}` }); 
+app.get("/", (req, res) => {
+  Logger.info("Health check endpoint called");
+  res.json({ status: `Server is running on port => ${port}` });
 });
 
 // Connect to MongoDB
 /* mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err)); */
+  .catch(err => console.error('MongoDB connection error:', err)); */ 
+
+// Error handling
+/* app.use((err, req, res, next) => {
+  Logger.error(`Error: ${err.message}`);
+  res.status(500).json({ error: 'Internal Server Error' });
+}); */
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server running on port => ${port}`);
 });
