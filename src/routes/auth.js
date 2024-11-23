@@ -2,6 +2,8 @@
 import express from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
+import { userDTO } from '../dtos/userDto.js';
+import Logger from '../config/logger.js';
 
 const router = express.Router();
 
@@ -15,17 +17,29 @@ router.get('/google',
 
 // Google OAuth callback
 router.get('/google/callback',
-  passport.authenticate('google', { session: false }),
+  passport.authenticate('google', { 
+    session: false,
+    failureRedirect: `${process.env.CLIENT_URL}/auth/callback?error=true` 
+  }),
   (req, res) => {
-    // Create JWT token
-    const token = jwt.sign(
-      { userId: req.user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
+    try {
+      const token = jwt.sign(
+        { 
+          userId: req.user.googleId,
+          email: req.user.email,
+          name: req.user.name
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: '1d' }
+      );
 
-    // Redirect to frontend with token
-    res.redirect(`${process.env.CLIENT_URL}/auth/success?token=${token}`);
+      console.log('Backend - Generated token:', token); // Debug log
+
+      res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}`);
+    } catch (error) {
+      console.error('Backend - Token generation error:', error);
+      res.redirect(`${process.env.CLIENT_URL}/auth/callback?error=true`);
+    }
   }
 );
 
@@ -33,8 +47,18 @@ router.get('/google/callback',
 router.get('/profile',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    res.json(req.user);
+    res.json(userDTO.toResponse(req.user));
   }
-);
+); 
+
+// Add this test endpoint
+router.get('/test', 
+  passport.authenticate('jwt', { session: false }), 
+  (req, res) => {
+    res.json({
+      message: 'Authentication successful',
+      user: req.user
+    });
+});
 
 export default router;

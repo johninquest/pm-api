@@ -1,8 +1,8 @@
-// src/app.js
 import express from "express";
 import passport from "passport";
 // import mongoose from 'mongoose';
 import "dotenv/config";
+import cors from 'cors';  
 import { setupPassport } from "./config/passport.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
@@ -13,6 +13,10 @@ const port = process.env.PORT;
 
 // Middleware
 app.use(express.json());
+app.use(cors({                    // Add cors here
+  origin: process.env.CLIENT_URL,
+  credentials: true
+}));
 
 // Setup passport
 setupPassport();
