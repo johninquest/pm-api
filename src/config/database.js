@@ -14,7 +14,8 @@ if (!fs.existsSync(dataDir)) {
 const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: path.resolve('data/sqlite.db'),
-  logging: msg => Logger.info(msg)
+  // logging: msg => Logger.info(msg) 
+  logging: false
 });
 
 // Test the connection
