@@ -17,4 +17,8 @@ logs
 
 # OS files
 .DS_Store
-Thumbs.db
+Thumbs.db 
+
+# Database 
+sqlite.db
+*.db
