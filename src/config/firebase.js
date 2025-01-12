@@ -1,5 +1,6 @@
 // src/config/firebase.js
 import admin from 'firebase-admin';
+import "dotenv/config";
 
 // Load service account from environment variable or file
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT || '{}');
