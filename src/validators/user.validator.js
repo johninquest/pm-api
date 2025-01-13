@@ -1,28 +1,22 @@
-import Joi from 'joi';
+// validators/user.validator.js
+import Joi from "joi";
 
-export const userDTO = {
-  validate(data) {
-    const schema = Joi.object({
-      username: Joi.string().min(3).max(50).required(),
-      email: Joi.string().email().required(),
-      password: Joi.string().min(5).required()
-    });
-    return schema.validate(data);
-  },
+const userSchema = Joi.object({
+  email: Joi.string().email().required(),
+  firstname: Joi.string().allow("", null),
+  lastname: Joi.string().allow("", null),
+  role: Joi.string().allow("", null),
+  country: Joi.string().allow("", null),
+  phone: Joi.string().allow("", null),
+  avatar: Joi.string().allow("", null)
+}).required();
 
-  toResponse(user) {
-    return {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      createdAt: user.createdAt
-    };
+export const validateUser = (req, res, next) => {
+  const { error } = userSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
   }
+  next();
 };
 
-export const propertySchema = Joi.object({
-  name: Joi.string().required(),
-  address: Joi.string().required(),
-  units: Joi.number().integer().min(1).required(),
-  monthlyRent: Joi.number().precision(2).required()
-});
+export { userSchema };
