@@ -1,4 +1,4 @@
-// src/models/user.model.js
+// src/models/expense.model.js
 import { DataTypes } from "sequelize";
 import { customAlphabet } from "nanoid";
 import sequelize from "../config/database.js";
@@ -6,8 +6,8 @@ import sequelize from "../config/database.js";
 const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const generateId = customAlphabet(alphabet, 21);
 
-const User = sequelize.define(
-  "User",
+const Expense = sequelize.define(
+  "Expense",
   {
     id: {
       type: DataTypes.STRING(21),
@@ -15,50 +15,46 @@ const User = sequelize.define(
       primaryKey: true,
       defaultValue: () => generateId(),
     },
-    email: {
+    propertyName: {
       type: DataTypes.STRING,
-      field: 'email',
-      allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true
-      }
-    },
-    firstname: {
-      type: DataTypes.STRING,
-      field: 'firstname',
+      field: 'property_name',
       allowNull: true,
     },
-    lastname: {
-      type: DataTypes.STRING,
-      field: 'lastname',
+    dateOfExpense: {
+      type: DataTypes.DATE,
+      field: 'date_of_expense',
       allowNull: true,
     },
-    role: {
+    expenseType: {
       type: DataTypes.STRING,
-      field: 'role',
+      field: 'expense_type',
       allowNull: true,
     },
-    country: {
-      type: DataTypes.STRING,
-      field: 'country',
+    description: {
+      type: DataTypes.TEXT,
+      field: 'description',
       allowNull: true,
     },
-    phone: {
-      type: DataTypes.STRING,
-      field: 'phone',
+    amount: {
+      type: DataTypes.DECIMAL,
+      field: 'amount',
       allowNull: true,
     },
-    avatar: {
+    vendor: {
       type: DataTypes.STRING,
-      field: 'avatar',
+      field: 'vendor',
+      allowNull: true,
+    },
+    createdBy: {
+      type: DataTypes.STRING,
+      field: 'created_by',
       allowNull: true,
     }
   },
   {
-    tableName: "users",
+    tableName: "expenses",
     underscored: true,
   }
 );
 
-export default User;
+export default Expense;

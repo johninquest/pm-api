@@ -1,4 +1,4 @@
-// src/models/user.model.js
+// src/models/income.model.js
 import { DataTypes } from "sequelize";
 import { customAlphabet } from "nanoid";
 import sequelize from "../config/database.js";
@@ -6,8 +6,8 @@ import sequelize from "../config/database.js";
 const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const generateId = customAlphabet(alphabet, 21);
 
-const User = sequelize.define(
-  "User",
+const Income = sequelize.define(
+  "Income",
   {
     id: {
       type: DataTypes.STRING(21),
@@ -15,50 +15,46 @@ const User = sequelize.define(
       primaryKey: true,
       defaultValue: () => generateId(),
     },
-    email: {
+    source: {
       type: DataTypes.STRING,
-      field: 'email',
-      allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true
-      }
-    },
-    firstname: {
-      type: DataTypes.STRING,
-      field: 'firstname',
+      field: 'source',
       allowNull: true,
     },
-    lastname: {
-      type: DataTypes.STRING,
-      field: 'lastname',
+    amount: {
+      type: DataTypes.DECIMAL,
+      field: 'amount',
       allowNull: true,
     },
-    role: {
-      type: DataTypes.STRING,
-      field: 'role',
+    paymentDate: {
+      type: DataTypes.DATE,
+      field: 'payment_date',
       allowNull: true,
     },
-    country: {
+    propertyId: {
       type: DataTypes.STRING,
-      field: 'country',
+      field: 'property_id',
       allowNull: true,
     },
-    phone: {
+    unitId: {
       type: DataTypes.STRING,
-      field: 'phone',
+      field: 'unit_id',
       allowNull: true,
     },
-    avatar: {
+    tenantId: {
       type: DataTypes.STRING,
-      field: 'avatar',
+      field: 'tenant_id',
+      allowNull: true,
+    },
+    createdBy: {
+      type: DataTypes.STRING,
+      field: 'created_by',
       allowNull: true,
     }
   },
   {
-    tableName: "users",
+    tableName: "incomes",
     underscored: true,
   }
 );
 
-export default User;
+export default Income;
