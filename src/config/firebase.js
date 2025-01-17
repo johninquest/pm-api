@@ -1,9 +1,17 @@
 // src/config/firebase.js
 import admin from 'firebase-admin';
-import "dotenv/config";
+import { readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-// Load service account from environment variable or file
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT || '{}');
+// Get the current file's directory
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Construct path to service account file (go up two levels from config dir)
+const serviceAccountPath = join(__dirname, '../../firebase-service-account.json');
+
+// Read and parse the service account file
+const serviceAccount = JSON.parse(readFileSync(serviceAccountPath, 'utf8'));
 
 // Initialize Firebase Admin SDK
 const initFirebase = () => {

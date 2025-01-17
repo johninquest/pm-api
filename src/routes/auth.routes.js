@@ -1,64 +1,48 @@
-// src/routes/auth.js
-import express from 'express';
-import passport from 'passport';
-import jwt from 'jsonwebtoken';
-import { userDTO } from '../dtos/userDto.js';
+// src/routes/auth.routes.js
+import { Router } from 'express';
+import { validateUser } from '../validators/user.validator.js';
+import { verifyFirebaseToken } from '../config/firebase.js';
+import User from '../models/user.model.js';
 import Logger from '../config/logger.js';
 
-const router = express.Router();
+const router = Router();
 
-// Start Google OAuth flow
-router.get('/google',
-  passport.authenticate('google', { 
-    scope: ['profile', 'email'],
-    prompt: 'select_account'
-  })
-);
-
-// Google OAuth callback
-router.get('/google/callback',
-  passport.authenticate('google', { 
-    session: false,
-    failureRedirect: `${process.env.CLIENT_URL}/auth/callback?error=true` 
-  }),
-  (req, res) => {
-    try {
-      const token = jwt.sign(
-        { 
-          userId: req.user.googleId,
-          email: req.user.email,
-          name: req.user.name
-        },
-        process.env.JWT_SECRET,
-        { expiresIn: '1d' }
-      );
-
-      console.log('Backend - Generated token:', token); // Debug log
-
-      res.redirect(`${process.env.CLIENT_URL}/auth/callback?token=${token}`);
-    } catch (error) {
-      console.error('Backend - Token generation error:', error);
-      res.redirect(`${process.env.CLIENT_URL}/auth/callback?error=true`);
+// Login/Register with Firebase token
+router.post('/login', verifyFirebaseToken, async (req, res, next) => {
+  try {
+    // Find or create user in our database
+    let user = await User.findOne({ where: { firebaseUid: req.user.uid } });
+    
+    if (!user) {
+      // Create new user if doesn't exist
+      user = await User.create({
+        firebaseUid: req.user.uid,
+        email: req.user.email,
+        roles: req.user.roles
+      });
+      Logger.info('New user created', { userId: user.id });
     }
-  }
-);
 
-// Test protected route
-router.get('/profile',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    res.json(userDTO.toResponse(req.user));
-  }
-); 
-
-// Add this test endpoint
-router.get('/test', 
-  passport.authenticate('jwt', { session: false }), 
-  (req, res) => {
     res.json({
       message: 'Authentication successful',
-      user: req.user
+      user: {
+        id: user.id,
+        email: user.email,
+        roles: user.roles
+      }
     });
+  } catch (error) {
+    Logger.error('Authentication error', { error: error.message });
+    next(error);
+  }
+});
+
+// Verify session
+router.get('/session', verifyFirebaseToken, async (req, res) => {
+  res.json({ 
+    authenticated: true,
+    user: req.user 
+  });
 });
 
 export default router;

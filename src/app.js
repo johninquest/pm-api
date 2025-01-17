@@ -1,11 +1,13 @@
 // src/app.js
 import express from "express"; 
+import authRoutes from './routes/auth.routes.js';
 import { initializeDatabase } from './config/database.js';
 import "dotenv/config";
 import cors from 'cors';
 import Logger from "./config/logger.js";
 import { specs, swaggerUi } from './config/swagger.js';
 import propertyRoutes from './routes/property.routes.js'; 
+// import { requireAuth } from "./middleware/auth.js";
 
 // Initialize database before setting up routes
 const initApp = async () => {
@@ -43,9 +45,13 @@ const initApp = async () => {
     });
 
     // Swagger docs
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs)); 
+
+    // Auth routes (should be before protected routes)
+    app.use('/api/auth', authRoutes);
 
     // Routes
+    // app.use("/api/properties", requireAuth, propertyRoutes); 
     app.use("/api/properties", propertyRoutes);
 
     // Health check

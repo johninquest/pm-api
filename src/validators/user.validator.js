@@ -1,14 +1,9 @@
-// validators/user.validator.js
-import Joi from "joi";
+// src/validators/user.validator.js
+import Joi from 'joi';
 
 const userSchema = Joi.object({
   email: Joi.string().email().required(),
-  firstname: Joi.string().allow("", null),
-  lastname: Joi.string().allow("", null),
-  role: Joi.string().allow("", null),
-  country: Joi.string().allow("", null),
-  phone: Joi.string().allow("", null),
-  avatar: Joi.string().allow("", null)
+  roles: Joi.array().items(Joi.string()).default(['user'])
 }).required();
 
 export const validateUser = (req, res, next) => {
@@ -18,5 +13,3 @@ export const validateUser = (req, res, next) => {
   }
   next();
 };
-
-export { userSchema };

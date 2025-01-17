@@ -15,44 +15,25 @@ const User = sequelize.define(
       primaryKey: true,
       defaultValue: () => generateId(),
     },
+    firebaseUid: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false
+    },
     email: {
       type: DataTypes.STRING,
-      field: 'email',
-      allowNull: false,
       unique: true,
-      validate: {
-        isEmail: true
-      }
-    },
-    firstname: {
-      type: DataTypes.STRING,
-      field: 'firstname',
-      allowNull: true,
-    },
-    lastname: {
-      type: DataTypes.STRING,
-      field: 'lastname',
-      allowNull: true,
+      allowNull: false
     },
     role: {
       type: DataTypes.STRING,
-      field: 'role',
-      allowNull: true,
+      defaultValue: 'user',
+      validate: {
+        isIn: [['admin', 'user']]  // Add any other roles you need
+      }
     },
-    country: {
-      type: DataTypes.STRING,
-      field: 'country',
-      allowNull: true,
-    },
-    phone: {
-      type: DataTypes.STRING,
-      field: 'phone',
-      allowNull: true,
-    },
-    avatar: {
-      type: DataTypes.STRING,
-      field: 'avatar',
-      allowNull: true,
+    lastLogin: {
+      type: DataTypes.DATE
     }
   },
   {
