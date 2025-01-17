@@ -1,23 +1,23 @@
 // src/config/swagger.js
-import swaggerJsdoc from 'swagger-jsdoc';
-import swagger from 'swagger-ui-express';  // Changed import name
+import swaggerJsdoc from "swagger-jsdoc";
+import swagger from "swagger-ui-express"; // Changed import name
 
 const options = {
   definition: {
-    openapi: '3.0.0',
+    openapi: "3.0.0",
     info: {
-      title: 'Property Management API',
-      version: '1.0.0',
-      description: 'Simple API for managing properties'
+      title: "Property Management API",
+      version: "1.0.0",
+      description: "Simple API for managing properties",
     },
     servers: [
       {
-        url: 'http://localhost:3000',
-        description: 'Development server'
-      }
-    ]
+        url: "http://localhost:3000",
+        description: "Development server",
+      },
+    ],
   },
-  apis: ['./src/routes/*.js']
+  apis: ["./src/routes/*.js", "./src/docs/*.js"],
 };
 
 const specs = swaggerJsdoc(options);
