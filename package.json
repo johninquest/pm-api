@@ -1,6 +1,6 @@
 {
   "name": "eba",
-  "version": "0.1.6",
+  "version": "0.1.28",
   "main": "app.js",
   "type": "module",
   "scripts": {

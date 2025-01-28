@@ -29,7 +29,7 @@ const propertySchema = Joi.object({
   street: Joi.string().allow("", null),
   postcode: Joi.string().allow("", null),
   state: Joi.string().allow("", null),
-  createdBy: Joi.string().required(),
+  createdBy: Joi.string(),
 }).required();
 
 // New update validator schema
