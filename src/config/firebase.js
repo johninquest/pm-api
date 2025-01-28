@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 // Get the current file's directory
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-// Construct path to service account file (go up two levels from config dir)
+// Construct path to service account file
 const serviceAccountPath = join(__dirname, '../../firebase-service-account.json');
 
 // Read and parse the service account file
@@ -28,7 +28,7 @@ export const verifyFirebaseToken = async (req, res, next) => {
   const idToken = req.headers.authorization?.split('Bearer ')[1];
   
   if (!idToken) {
-    return res.status(403).json({ error: 'No token provided' });
+    return res.status(401).json({ error: 'No token provided' });
   }
 
   try {
@@ -45,7 +45,7 @@ export const verifyFirebaseToken = async (req, res, next) => {
     next();
   } catch (error) {
     console.error('Firebase token verification error:', error);
-    res.status(403).json({ error: 'Unauthorized' });
+    res.status(401).json({ error: 'Unauthorized' });
   }
 };
 

@@ -13,18 +13,18 @@ const Property = sequelize.define(
   {
     id: {
       type: DataTypes.STRING(21),
-      field: 'id', // Explicitly map id
+      field: "id", // Explicitly map id
       primaryKey: true,
       defaultValue: () => generateId(),
     },
     name: {
       type: DataTypes.STRING,
-      field: 'name', // Explicitly map name
+      field: "name", // Explicitly map name
       allowNull: false,
     },
     type: {
       type: DataTypes.STRING,
-      field: 'type', // Explicitly map type
+      field: "type", // Explicitly map type
       allowNull: false,
       validate: {
         isIn: [
@@ -43,54 +43,54 @@ const Property = sequelize.define(
     },
     numberOfUnits: {
       type: DataTypes.INTEGER,
-      field: 'number_of_units', // Different column name
+      field: "number_of_units", // Different column name
       defaultValue: 1,
       allowNull: false,
     },
     constructionYear: {
       type: DataTypes.STRING,
-      field: 'construction_year', // Different column name
+      field: "construction_year", // Different column name
       allowNull: true,
     },
     currentValue: {
       type: DataTypes.DECIMAL,
-      field: 'current_value', // Different column name
+      field: "current_value", // Different column name
       allowNull: true,
     },
     city: {
       type: DataTypes.STRING,
-      field: 'city', // Explicitly map city
+      field: "city", // Explicitly map city
       allowNull: false,
     },
     country: {
       type: DataTypes.STRING,
-      field: 'country', // Explicitly map country
+      field: "country", // Explicitly map country
       allowNull: false,
     },
     street: {
       type: DataTypes.STRING,
-      field: 'street', // Explicitly map street
+      field: "street", // Explicitly map street
       allowNull: true,
     },
     postcode: {
       type: DataTypes.STRING,
-      field: 'postcode', // Explicitly map postcode
+      field: "postcode", // Explicitly map postcode
       allowNull: true,
     },
     state: {
       type: DataTypes.STRING,
-      field: 'state', // Explicitly map state
+      field: "state", // Explicitly map state
       allowNull: true,
     },
     createdBy: {
       type: DataTypes.STRING,
-      field: 'created_by', // Different column name
+      field: "created_by", // Different column name
       allowNull: false,
     },
   },
   {
     tableName: "properties",
-    underscored: true,
+    underscored: true
   }
 );
 

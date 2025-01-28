@@ -4,12 +4,13 @@ import { validateProperty, validatePropertyUpdate } from '../validators/property
 import Property from '../models/property.model.js';
 import PropertyRepository from '../repositories/property.repository.js';
 import Logger from '../config/logger.js';
-import '../docs/property.docs.js';  // Import swagger docs
+import '../docs/property.docs.js';  // Import swagger docs 
+import { requireAuth } from '../middleware/auth.js'; // Import requireAuth middleware
 
 const router = Router();
 
 // Create property
-router.post('/', validateProperty, async (req, res, next) => {
+router.post('/', requireAuth(), validateProperty, async (req, res, next) => { // Apply the authentication middleware
   try {
     const propertyData = {
       name: req.body.name,
@@ -22,7 +23,7 @@ router.post('/', validateProperty, async (req, res, next) => {
       street: req.body.street,
       postcode: req.body.postcode,
       state: req.body.state,
-      createdBy: req.body.createdBy,
+      createdBy: req.user.email, // Use the user's email from the decoded token
     };
 
     const property = await Property.create(propertyData);
@@ -38,10 +39,25 @@ router.post('/', validateProperty, async (req, res, next) => {
   }
 });
 
-// Get all properties
-router.get('/', async (req, res, next) => {
+/* // Get all properties
+router.get('/', requireAuth(), async (req, res, next) => {
   try {
     const properties = await Property.findAll();
+    res.json(properties);
+  } catch (error) {
+    next(error);
+  }
+}); */ 
+
+// Get all properties (authentication required)
+router.get('/', requireAuth(), async (req, res, next) => { // Apply the authentication middleware
+  try {
+    const properties = await Property.findAll({
+      order: [
+        ['createdAt', 'DESC'], // Sort by 'createdAt' in descending order
+      ]
+    });
+
     res.json(properties);
   } catch (error) {
     next(error);
