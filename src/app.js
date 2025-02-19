@@ -1,7 +1,7 @@
 // src/app.js
 import express from "express";
-import authRoutes from "./routes/auth.routes.js";
-import propertyRoutes from "./routes/property.routes.js";
+import authRoutes from "./routes/authRoutes.js";
+import propertyRoutes from "./routes/propertyRoutes.js";
 import { specs, swaggerUi } from "./config/swagger.js";
 import cors from "cors";
 import Logger from "./config/logger.js";

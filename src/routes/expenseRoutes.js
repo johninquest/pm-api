@@ -4,7 +4,7 @@ import { validateProperty, validatePropertyUpdate } from '../validators/property
 import Property from '../models/property.model.js';
 // import PropertyRepository from '../repositories/property.repository.js';
 import Logger from '../config/logger.js';
-import '../docs/property.docs.js';  // Import swagger docs 
+import '../docs/propertyDocs.js';  // Import swagger docs 
 import { requireAuth } from '../middleware/auth.js'; // Import requireAuth middleware
 
 const router = Router();

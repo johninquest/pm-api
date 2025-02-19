@@ -1,8 +1,8 @@
 // src/routes/auth.routes.js
 import { Router } from 'express';
-import { validateUser } from '../validators/user.validator.js';
+import { validateUser } from '../validators/userValidator.js';
 import { verifyFirebaseToken } from '../config/firebase.js';
-import User from '../models/user.model.js';
+import User from '../schemas/userSchema.js';
 import Logger from '../config/logger.js';
 
 const router = Router();
