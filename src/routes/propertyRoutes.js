@@ -1,4 +1,4 @@
-// src/routes/property.routes.js
+// src/routes/propertyRoutes.js
 import { Router } from 'express';
 import { validateProperty, validatePropertyUpdate } from '../validators/propertyValidator.js';
 import Property from '../schemas/propertySchema.js';

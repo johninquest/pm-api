@@ -1,4 +1,4 @@
-// routes/users.js
+// routes/userRoutes.js
 import express from 'express';
 import { validateDTO } from '../middleware/validate.js';
 import { userDTO } from '../dtos/userDto.js';
