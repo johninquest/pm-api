@@ -1,5 +1,5 @@
 // src/repositories/property.repository.js
-import { Op } from 'sequelize';
+// import { Op } from 'sequelize';
 import Property from '../schemas/propertySchema.js';
 
 class PropertyRepository {

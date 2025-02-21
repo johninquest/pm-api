@@ -5,7 +5,8 @@ import Property from '../schemas/propertySchema.js';
 import PropertyRepository from '../repositories/propertyRepo.js';
 import Logger from '../config/logger.js';
 import '../docs/propertyDocs.js';  // Import swagger docs 
-import { requireAuth } from '../middleware/auth.js'; // Import requireAuth middleware
+import { requireAuth } from '../middleware/auth.js'; // Import requireAuth middleware 
+import { createErrorResponse, ErrorTypes } from '../utils/responses.js'; // Import createErrorResponse and ErrorTypes
 
 const router = Router();
 
@@ -97,10 +98,19 @@ router.get('/:id', async (req, res, next) => {
     const property = await Property.findByPk(req.params.id);
     
     if (!property) {
-      return res.status(404).json({ 
+      /* return res.status(404).json({ 
         message: 'Property not found' 
-      });
+      }); */ 
+      return res.status(404).json(
+        createErrorResponse(
+          ErrorTypes.NOT_FOUND,
+          'Property not found',
+          req,
+          { propertyId: req.params.id }
+        )
+      );
     }
+
 
     res.json(property);
   } catch (error) {
