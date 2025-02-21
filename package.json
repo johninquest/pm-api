@@ -1,5 +1,5 @@
 {
-  "name": "proma-api",
+  "name": "pm-api",
   "version": "0.2.21",
   "main": "src/server.js",
   "type": "module",
