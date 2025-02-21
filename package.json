@@ -1,13 +1,12 @@
 {
   "name": "proma-api",
-  "version": "0.2.19",
-  "main": "app.js",
+  "version": "0.2.21",
+  "main": "src/server.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
-    "migrate": "node src/scripts/migrate.js"
+    "dev": "nodemon src/server.js"
   },
   "keywords": [],
   "author": "",
