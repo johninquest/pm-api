@@ -1,4 +1,4 @@
-// src/docs/property.docs.js
+// src/modules/property/property.docs.js
 
 /**
  * @swagger

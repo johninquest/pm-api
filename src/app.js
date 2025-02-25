@@ -1,25 +1,20 @@
-// src/app.js
-import express from "express"; 
-import helmet from "helmet"; // Import helmet
-import authRoutes from "./routes/authRoutes.js";
-import propertyRoutes from "./routes/propertyRoutes.js";
-import { specs, swaggerUi } from "./config/swagger.js";
+import express from "express";
+import helmet from "helmet";
 import cors from "cors";
-import Logger from "./config/logger.js"; 
-import errorHandler from "./middleware/error.js"; // 
+import Logger from "./shared/config/logger.js";
+import { setupRoutes } from "./api/routes.js";
 
-const app = express(); 
+const app = express();
 
 // Security Middleware
-// app.use(helmet()); 
 app.use(
   helmet({
-    contentSecurityPolicy: false, // Avoid blocking inline scripts in dev
-    frameguard: false, // APIs don’t need this
-    hsts: false, // Don't enforce HTTPS in dev (use it in production)
+    contentSecurityPolicy: false,
+    frameguard: false,
+    hsts: false,
     referrerPolicy: { policy: "no-referrer" },
   })
-); 
+);
 
 // Middleware
 app.use(
@@ -44,51 +39,21 @@ app.use((req, res, next) => {
   });
 });
 
-
+// Logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
-  
-  try {
-    Logger.http(`Incoming ${req.method} ${req.url} ${JSON.stringify(req.body)}`);
-    res.on('finish', () => {
-      const duration = Date.now() - start;
-      Logger.http(`Finished ${req.method} ${req.url} ${res.statusCode} ${duration}ms`);
-    });
+  Logger.http(`Incoming ${req.method} ${req.url} ${JSON.stringify(req.body)}`);
 
-    next();
-  } catch (error) {
-    Logger.error(`Error in logging middleware: ${error.message}`);
-    next(error);
-  }
+  res.on("finish", () => {
+    const duration = Date.now() - start;
+    Logger.http(`Finished ${req.method} ${req.url} ${res.statusCode} ${duration}ms`);
+  });
+
+  next();
 });
 
-// Swagger docs
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
-
-// Auth routes (should be before protected routes)
-app.use("/api/auth", authRoutes);
-
-// Property routes
-app.use("/api/properties", propertyRoutes);
-
-// Health check
-app.get("/", (req, res) => {
-  try {
-    Logger.info("Health check endpoint called");
-    res.json({
-      status: "ok",
-      timestamp: new Date().toISOString(),
-      uptime: process.uptime(),
-    });
-  } catch (error) {
-    Logger.error(`Health check error: ${error.message}`);
-    res.status(500).json({
-      status: "error",
-      message: "Health check failed",
-      timestamp: new Date().toISOString()
-    });
-  }
-});
+// Setup all routes, including API, Swagger, and health check
+setupRoutes(app);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

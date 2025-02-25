@@ -1,6 +1,6 @@
 // src/repositories/property.repository.js
 // import { Op } from 'sequelize';
-import Property from '../schemas/propertySchema.js';
+import Property from './property.model.js';
 
 class PropertyRepository {
   async getUserPropertyTotalValue(userEmail) {
