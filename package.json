@@ -1,6 +1,6 @@
 {
   "name": "pm-api",
-  "version": "0.2.25",
+  "version": "0.2.26",
   "main": "src/server.js",
   "type": "module",
   "scripts": {
@@ -27,6 +27,8 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
+    "pg": "^8.13.3",
+    "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.5",
     "sqlite3": "^5.1.7",
     "swagger-jsdoc": "^6.2.8",

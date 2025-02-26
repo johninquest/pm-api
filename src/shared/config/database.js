@@ -1,21 +1,13 @@
-// src/config/database.js
 import { Sequelize } from 'sequelize';
 import Logger from './logger.js';
-import fs from 'fs';
-import path from 'path';
+import dotenv from 'dotenv';
 
-// Ensure data directory exists
-const dataDir = path.resolve('data');
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
-}
+dotenv.config();
 
 // Create Sequelize instance
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: path.resolve('data/sqlite.db'),
-  // logging: msg => Logger.info(msg) 
-  logging: false
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'postgres',
+  logging: false, // You can enable logging if needed
 });
 
 // Test the connection

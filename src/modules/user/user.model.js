@@ -1,40 +1,34 @@
-// src/modules/user/user.model.js
 import { DataTypes } from "sequelize";
-import { customAlphabet } from "nanoid";
 import sequelize from "../../shared/config/database.js";
-
-const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-const generateId = customAlphabet(alphabet, 21);
 
 const User = sequelize.define(
   "User",
   {
     id: {
-      type: DataTypes.STRING(21),
-      field: 'id',
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      defaultValue: () => generateId(),
     },
     firebaseUid: {
       type: DataTypes.STRING,
       unique: true,
-      allowNull: false
+      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
       unique: true,
-      allowNull: false
+      allowNull: false,
     },
     role: {
       type: DataTypes.STRING,
-      defaultValue: 'user',
+      defaultValue: "user",
       validate: {
-        isIn: [['admin', 'user']]  // Add any other roles you need
-      }
+        isIn: [["admin", "user"]], // Add any other roles you need
+      },
     },
     lastLogin: {
-      type: DataTypes.DATE
-    }
+      type: DataTypes.DATE,
+    },
   },
   {
     tableName: "users",

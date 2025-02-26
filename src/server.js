@@ -1,6 +1,6 @@
 // src/server.js
 import app from "./app.js";
-import { initializeDatabase } from "./config/database.js";
+import { initializeDatabase } from "./shared/config/database.js";
 import Logger from "./config/logger.js";
 import "dotenv/config";
 
