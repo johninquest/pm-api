@@ -1,3 +1,4 @@
+// src/shared/config/database.js
 import { Sequelize } from 'sequelize';
 import Logger from './logger.js';
 import dotenv from 'dotenv';
