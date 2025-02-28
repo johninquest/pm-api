@@ -7,11 +7,12 @@ import Logger from '../../shared/config/logger.js'; // Import the logger
 import './property.docs.js';  // Import swagger docs 
 import { requireAuth } from '../../shared/middleware/auth.js'; // Import requireAuth middleware 
 import { createErrorResponse, ErrorTypes } from '../../shared/utils/response.js'; // Import createErrorResponse and ErrorTypes
+import updateLastLoginMiddleware from '../user/user.middleware.js'; // Import the updateLastLoginMiddleware
 
 const router = Router();
 
 // Create property
-router.post('/', requireAuth(), validateProperty, async (req, res, next) => { // Apply the authentication middleware
+router.post('/', requireAuth(), updateLastLoginMiddleware, validateProperty, async (req, res, next) => { // Apply the authentication middleware
   try {
     const propertyData = {
       name: req.body.name,
@@ -41,7 +42,7 @@ router.post('/', requireAuth(), validateProperty, async (req, res, next) => { //
 });
 
 // Get all properties (authentication required)
-router.get('/', requireAuth(), async (req, res, next) => { // Apply the authentication middleware
+router.get('/', requireAuth(), updateLastLoginMiddleware, async (req, res, next) => { // Apply the authentication middleware
   try {
     const properties = await Property.findAll({
       order: [

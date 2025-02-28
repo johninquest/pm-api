@@ -1,5 +1,5 @@
 FROM node:18-alpine
-WORKDIR /pm-api
+WORKDIR /pm-api 
 
 # Install dependencies
 COPY package*.json ./
